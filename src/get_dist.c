@@ -1,0 +1,108 @@
+#include "cub3d.h"
+
+void	print_ray(t_vars *v)
+{
+	printf("======================================================\n");
+	printf("raydirx = %lf, raydiry = %lf\n", v->ray_dirx, v->ray_diry);
+	printf("deltax = %lf, deltay = %lf\n", v->deltax, v->deltay);
+	printf("incx = %d, incy = %d, sidex = %lf, sidey = %lf\n", v->incx, v->incy, v->sidex, v->sidey);
+	printf("dist = %lf\n", v->dist);
+	printf("firstpx %d, lastpx %d\n", v->first_px, v->last_px);
+}
+
+int	get_dist(t_vars *v)
+{
+	int	cpt;
+	int	wall;
+
+	cpt = -1;
+	printf("posx = %f, posy = %f\n", v->posx, v->posy);
+	while (++cpt < WIDTH)
+	{
+		//Initialisation du rayon
+		v->mapx = (int)v->posx;
+		v->mapy = (int)v->posy;
+		v->camerax = 2 * cpt / (double)WIDTH - 1; //camera X entre -1 et 1
+		v->ray_dirx = v->dirx + v->planex * (double)v->camerax;
+		v->ray_diry = v->diry + v->planey * (double)v->camerax;
+		v->deltax = sqrt(1 + (v->ray_diry * v->ray_diry) / (v->ray_dirx * v->ray_dirx));
+		v->deltay = sqrt(1 + (v->ray_dirx * v->ray_dirx) / (v->ray_diry * v->ray_diry));
+		if (v->ray_dirx < 0)
+		{
+			v->incx = -1;
+			v->sidex = (v->posx - v->mapx) * v->deltax;
+		}
+		else
+		{
+			v->incx = 1;
+			v->sidex = (v->mapx + 1.0 - v->posx) * v->deltax;
+		}
+		if (v->ray_diry < 0)
+		{
+			v->incy = -1;
+			v->sidey = (v->posy - v->mapy) * v->deltay;
+		}
+		else
+		{
+			v->incy = 1;
+			v->sidey = (v->mapy + 1.0 - v->posy) * v->deltay;
+		}
+		//recherche du point de contact avec le prochain mur
+		wall = 0;
+		while (!wall)
+		{
+			if (v->sidex < v->sidey)
+			{
+				v->sidex += v->deltax;
+				v->mapx += v->incx;
+				v->side = 0;
+			}
+			else
+			{
+				v->sidey += v->deltay;
+				v->mapy += v->incy;
+				v->side = 1;
+			}
+			//coordonnees du mur touche = [mapx][mapy]
+			if (v->map[v->mapx][v->mapy] == 1)
+				wall = 1;
+		}
+		//calcul de la distance perpendiculaire au plan de camera
+		//cas ou contact avec mur vertical
+		if (v->side == 1)
+		{	
+			//v->dist = sqrt(v->sidey * v->sidey) / sqrt(v->ray_dirx * v->ray_dirx + v->ray_diry * v->ray_diry);
+			//v->dist = v->sidey - v->deltay;
+			v->dist = (v->mapy - v->posy + (1 - v->incy) / 2) / v->ray_diry;
+			//Le calcul de v->wall_x n'est pas bon car v->side est une valeur toujours positive,
+			//il faut adapter en fonction de la direction du rayon
+			//+ d'autres problemes
+			//v->wall_x = v->posx + v->sidex;
+		}
+		//cas ou contact avec mur horizontal
+		else
+		{
+			//v->dist = sqrt(v->sidex * v->sidex) / sqrt(v->ray_dirx * v->ray_dirx + v->ray_diry * v->ray_diry);
+			//v->dist = v->sidex - v->deltax;
+			v->dist = (v->mapx - v->posx + (1 - v->incx) / 2) / v->ray_dirx;
+			//v->wall_x = v->posy + v->sidey;
+		}
+		v->w_height = (int)(HEIGHT / v->dist);
+		v->first_px = -v->w_height / 2 + HEIGHT / 2;
+		if (v->first_px < 0)
+			v->first_px = 0;
+		v->last_px = v->w_height / 2 + HEIGHT / 2;
+		if (v->last_px >= HEIGHT)
+			v->last_px = HEIGHT - 1;
+	//	point d intersection avec le mur -> (posx + sideX , posy + sideY)
+		if (v->side == 0 && v->ray_dirx > 0)       //texture = North
+			draw_px_col2(v, cpt, 'N');
+		else if (v->side == 0 && v->ray_dirx <= 0) //texture = South
+			draw_px_col2(v, cpt, 'S');
+		else if (v->side == 1 && v->ray_diry > 0)  //texture = East
+			draw_px_col2(v, cpt, 'E');
+		else if (v->side == 1 && v->ray_diry <= 0) //texture = West
+			draw_px_col2(v, cpt, 'W');
+		}
+	return (0);
+}
