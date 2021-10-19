@@ -6,7 +6,7 @@
 /*   By: dsaada <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:25:02 by dsaada            #+#    #+#             */
-/*   Updated: 2021/10/19 00:50:20 by dsaada           ###   ########.fr       */
+/*   Updated: 2021/10/19 17:49:26 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ int     draw_map(t_vars *v, int *map);
 int     draw_square(t_vars *v, int x, int y, int color);
 void	line(t_vars *v, int x,int y,int x2, int y2, int color);
 void	draw_rays(t_vars *v);
-void    draw_px_col(t_vars *v, int cpt, char dir);
+void    draw_px_col(t_vars *v, int cpt);
 void    draw_px_col2(t_vars *v, int cpt, char dir);
 int	parser(int fd, t_vars *v);
 int     parse_resolution(t_vars *v, char *str);

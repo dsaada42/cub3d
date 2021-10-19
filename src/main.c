@@ -6,7 +6,7 @@
 /*   By: dsaada <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:54:29 by dsaada            #+#    #+#             */
-/*   Updated: 2021/10/19 00:51:07 by dsaada           ###   ########.fr       */
+/*   Updated: 2021/10/19 19:14:59 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ int		keypress_handler(int keycode, t_vars *v)
 	if (keycode == ESCAPE)
 	{
 		mlx_destroy_window(v->mlx, v->win);
-		free_all(v);
+		//free_all(v);
 		exit(0);
 	}
 	else

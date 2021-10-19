@@ -16,7 +16,6 @@ int	get_dist(t_vars *v)
 	int	wall;
 
 	cpt = -1;
-	printf("posx = %f, posy = %f\n", v->posx, v->posy);
 	while (++cpt < WIDTH)
 	{
 		//Initialisation du rayon
@@ -68,25 +67,18 @@ int	get_dist(t_vars *v)
 				wall = 1;
 		}
 		//calcul de la distance perpendiculaire au plan de camera
-		//cas ou contact avec mur vertical
-		if (v->side == 1)
+		if (v->side == 1) //contact horizontal a la distance v->sidey
 		{	
-			//v->dist = sqrt(v->sidey * v->sidey) / sqrt(v->ray_dirx * v->ray_dirx + v->ray_diry * v->ray_diry);
-			//v->dist = v->sidey - v->deltay;
 			v->dist = (v->mapy - v->posy + (1 - v->incy) / 2) / v->ray_diry;
-			//Le calcul de v->wall_x n'est pas bon car v->side est une valeur toujours positive,
-			//il faut adapter en fonction de la direction du rayon
-			//+ d'autres problemes
-			//v->wall_x = v->posx + v->sidex;
+			v->wall_x = v->posx + v->dist * v->ray_dirx;
 		}
-		//cas ou contact avec mur horizontal
-		else
+		else // contact vertical a la distance v->sidex
 		{
-			//v->dist = sqrt(v->sidex * v->sidex) / sqrt(v->ray_dirx * v->ray_dirx + v->ray_diry * v->ray_diry);
-			//v->dist = v->sidex - v->deltax;
 			v->dist = (v->mapx - v->posx + (1 - v->incx) / 2) / v->ray_dirx;
-			//v->wall_x = v->posy + v->sidey;
+			v->wall_x = v->posy + v->dist * v->ray_diry;
 		}
+		v->wall_x -= floor((v->wall_x));
+
 		v->w_height = (int)(HEIGHT / v->dist);
 		v->first_px = -v->w_height / 2 + HEIGHT / 2;
 		if (v->first_px < 0)
@@ -94,7 +86,7 @@ int	get_dist(t_vars *v)
 		v->last_px = v->w_height / 2 + HEIGHT / 2;
 		if (v->last_px >= HEIGHT)
 			v->last_px = HEIGHT - 1;
-	//	point d intersection avec le mur -> (posx + sideX , posy + sideY)
+		//point d intersection avec le mur -> (posx + sideX , posy + sideY)
 		if (v->side == 0 && v->ray_dirx > 0)       //texture = North
 			draw_px_col2(v, cpt, 'N');
 		else if (v->side == 0 && v->ray_dirx <= 0) //texture = South
@@ -103,6 +95,6 @@ int	get_dist(t_vars *v)
 			draw_px_col2(v, cpt, 'E');
 		else if (v->side == 1 && v->ray_diry <= 0) //texture = West
 			draw_px_col2(v, cpt, 'W');
-		}
+	}
 	return (0);
 }

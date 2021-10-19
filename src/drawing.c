@@ -6,7 +6,7 @@
 /*   By: dsaada <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:54:38 by dsaada            #+#    #+#             */
-/*   Updated: 2021/10/19 01:47:09 by dsaada           ###   ########.fr       */
+/*   Updated: 2021/10/19 19:14:50 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,10 @@ void    my_mlx_pixel_put(t_data *data, int x, int y, int color)
         *(unsigned int*)dst = color;
 }
 
-void    draw_px_col(t_vars *v, int cpt, char dir)
+void    draw_px_col(t_vars *v, int cpt)
 {
         int     px;
-	int	color;
 
-	color = 0;
-	if (dir == 'N')
-		color = BLUE;
-	else if (dir == 'S')
-		color = RED;
-	else if (dir == 'E')
-		color = GREEN;
-	else if (dir == 'W')
-		color = 0x00AAAAAA;
         if (v->first_px > 0)
         {
                 px = -1;
@@ -42,7 +32,7 @@ void    draw_px_col(t_vars *v, int cpt, char dir)
 	}
         px = v->first_px - 1;
         while (++px < v->last_px)
-                my_mlx_pixel_put(&v->img, cpt, px, color);
+                my_mlx_pixel_put(&v->img, cpt, px, RED);
         while (px < HEIGHT)
         {
                 my_mlx_pixel_put(&v->img, cpt, px, v->floor);
@@ -86,8 +76,6 @@ void    draw_px_col2(t_vars *v, int cpt, char dir)
         }
 	px = v->first_px - 1;
 	prec = v->wall_x - (int)v->wall_x;
-	printf("wallx = %f\n", v->wall_x);
-	printf("prec = %f\n", prec);
 	y = 0;
         while (++px < v->last_px)
 	{
