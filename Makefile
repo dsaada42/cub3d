@@ -6,7 +6,7 @@
 #    By: dsaada <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/10/18 15:22:57 by dsaada            #+#    #+#              #
-#    Updated: 2021/10/18 16:28:03 by dsaada           ###   ########.fr        #
+#    Updated: 2021/10/20 22:25:11 by dsaada           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ CC = gcc
 
 DEBUG = -g3 -fsanitize=address
 
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -Werror
 
 SRC = src/main.c\
       src/drawing.c\

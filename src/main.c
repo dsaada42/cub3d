@@ -6,7 +6,7 @@
 /*   By: dsaada <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/18 15:54:29 by dsaada            #+#    #+#             */
-/*   Updated: 2021/10/19 19:14:59 by dsaada           ###   ########.fr       */
+/*   Updated: 2021/10/20 23:12:48 by dsaada           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,6 @@ int		keypress_handler(int keycode, t_vars *v)
 	if (keycode == ESCAPE)
 	{
 		mlx_destroy_window(v->mlx, v->win);
-		//free_all(v);
 		exit(0);
 	}
 	else
@@ -132,9 +131,18 @@ int		render_next_frame(t_vars *v)
 
 int		get_textures(t_vars *v)
 {
+	v->img_no->img = mlx_xpm_file_to_image(v->mlx, v->north, &v->img_no->width, &v->img_no->height);
+        v->img_no->addr = mlx_get_data_addr(v->img_no->img, &v->img_no->bpp,
+                &v->img_no->line_length, &v->img_no->endian);
+        /*v->img_we->img = mlx_xpm_file_to_image(v->mlx, v->west, &v->img_we->width, &v->img_we->height);
+        v->img_we->addr = mlx_get_data_addr(v->img_we->img, &v->img_we->bpp,
+                &v->img_we->line_length, &v->img_we->endian);
 	v->img_so->img = mlx_xpm_file_to_image(v->mlx, v->south, &v->img_so->width, &v->img_so->height);
 	v->img_so->addr = mlx_get_data_addr(v->img_so->img, &v->img_so->bpp,
                 &v->img_so->line_length, &v->img_so->endian);
+        v->img_ea->img = mlx_xpm_file_to_image(v->mlx, v->east, &v->img_ea->width, &v->img_ea->height);
+        v->img_ea->addr = mlx_get_data_addr(v->img_ea->img, &v->img_ea->bpp,
+                &v->img_ea->line_length, &v->img_ea->endian);*/
 	return (0);
 }
 
